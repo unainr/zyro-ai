@@ -35,8 +35,8 @@ AI generates:
 
 export const uiGenerations = pgTable("ui_generations", {
 	id: uuid("id").primaryKey().defaultRandom(),
+	userId: text("user_id").notNull(),
 
-	clerkUserId: text("clerk_user_id").notNull(),
 
 	title: text("title"),
 
@@ -63,6 +63,7 @@ Save:
 
 export const excalidrawProjects = pgTable("excalidraw_projects", {
 	id: uuid("id").primaryKey().defaultRandom(),
+	userId: text("user_id").notNull(),
 
 	title: text("title"),
 	
@@ -87,6 +88,7 @@ Used for:
 
 export const dbDesigns = pgTable("db_designs", {
 	id: uuid("id").primaryKey().defaultRandom(),
+	userId: text("user_id").notNull(),
 
 	title: text("title"),
 

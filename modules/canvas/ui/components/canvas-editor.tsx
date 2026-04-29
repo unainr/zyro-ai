@@ -7,6 +7,8 @@ import { useUpdateProject } from "../../hooks/use-canvas";
 import { useRef } from "react";
 import { ExcalidrawElement } from "@excalidraw/excalidraw/element/types";
 import { AppState, BinaryFiles } from "@excalidraw/excalidraw/types";
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 
 const Excalidraw = dynamic(
     async () => (await import("@excalidraw/excalidraw")).Excalidraw,
@@ -58,13 +60,19 @@ export default function CanvasEditor({ projectId, initialData }: CanvasEditorPro
 
             {/* Save button overlay */}
             <div className="absolute top-3 right-3 z-100">
-                <button
+                <Button
                     onClick={handleSave}
                     disabled={isPending}
-                    className="bg-white text-black text-xs font-medium px-3 py-1.5 rounded-lg disabled:opacity-50 hover:bg-white/90 transition cursor-pointer"
-                >
-                    {isPending ? "Saving..." : "💾 Save"}
-                </button>
+                    variant={'primary'}
+                    className='rounded-none'
+>
+                     {isPending ?<>
+                        
+                            <Spinner/> Saving 
+                        </> 
+                        
+                        : "Save"}
+                </Button>
             </div>
 
             <Excalidraw
