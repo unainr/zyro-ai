@@ -2,31 +2,84 @@
 
 import { db } from "@/drizzle/db";
 import { excalidrawProjects } from "@/drizzle/schema";
-import { eq } from "drizzle-orm";
+import { auth } from "@clerk/nextjs/server";
+import { and, eq } from "drizzle-orm";
 
 export async function getProjects() {
-    const result = await db.select().from(excalidrawProjects).orderBy(excalidrawProjects.createdAt);
-    return { projects: result };
+    const { userId } = await auth();
+
+    if (!userId) {
+        return {
+            success: false,
+            error: "Unauthorized",
+        };
+    }
+
+    try {
+        const result = await db
+            .select()
+            .from(excalidrawProjects)
+            .where(eq(excalidrawProjects.userId, userId))
+            .orderBy(excalidrawProjects.createdAt);
+
+        return {
+            success: true,
+            projects: result,
+        };
+    } catch (error) {
+        console.log(error);
+
+        return {
+            success: false,
+            error: "Failed to fetch projects",
+        };
+    }
 }
 
+
+
 export async function getProjectById(id: string) {
+    const {userId} = await auth();
+    if(!userId) return {success:false, error: "Unauthorized"};
     try {
         const [project] = await db
-        .select()
-        .from(excalidrawProjects)
-        .where(eq(excalidrawProjects.id, id));
-    return {success:true, project};
+            .select()
+            .from(excalidrawProjects)
+            .where(
+                and(
+                    eq(excalidrawProjects.id, id),
+                    eq(excalidrawProjects.userId, userId)
+                )
+            );
+
+        if (!project) {
+            return {
+                success: false,
+                error: "Project not found"
+            };
+        }
+
+        return {
+            success: true,
+            project
+        };
     } catch (error) {
-        console.log(error)
-        return {success:false, error: "Project not found"};
+        console.log(error);
+
+        return {
+            success: false,
+            error: "Something went wrong"
+        };
     }
 }
 
 export async function createProject(title: string) {
+    const {userId} = await auth()
+    if(!userId) return {success:false, error: "Unauthorized"};
     try {
         const [project] = await db
         .insert(excalidrawProjects)
-        .values({ title })
+        .values({ title ,userId} )
         .returning();
     return {success:true, project};
     } catch (error) {
@@ -35,25 +88,65 @@ export async function createProject(title: string) {
     }
 }
 
-export async function updateProject(id: string, data: {
-    title?: string;
-    editorData?: Record<string, any>;
-}) {
+export async function updateProject(
+    id: string,
+    data: {
+        title?: string;
+        editorData?: Record<string, any>;
+    }
+) {
+    const { userId } = await auth();
+
+    if (!userId) {
+        return {
+            success: false,
+            error: "Unauthorized",
+        };
+    }
+
     try {
         const [project] = await db
-        .update(excalidrawProjects)
-        .set(data)
-        .where(eq(excalidrawProjects.id, id))
-        .returning();
-    return {success:true, project};
+            .update(excalidrawProjects)
+            .set(data)
+            .where(
+                and(
+                    eq(excalidrawProjects.id, id),
+                    eq(excalidrawProjects.userId, userId)
+                )
+            )
+            .returning();
+
+        if (!project) {
+            return {
+                success: false,
+                error: "Project not found",
+            };
+        }
+
+        return {
+            success: true,
+            project,
+        };
     } catch (error) {
-        console.log(error)
-        return {success:false, error: "Failed to update project"};
+        console.log(error);
+
+        return {
+            success: false,
+            error: "Failed to update project",
+        };
     }
 }
 
 export async function deleteProject(id: string) {
-    await db
+    const {userId} = await auth()
+    if(!userId) return {success:false, error: "Unauthorized"};
+   try {
+     await db
         .delete(excalidrawProjects)
-        .where(eq(excalidrawProjects.id, id));
+        .where(and(eq(excalidrawProjects.id, id),
+        eq(excalidrawProjects.userId, userId)));
+        return{success:true}
+   } catch (error) {
+    return {success:false, error: "Failed to delete project"};
+   }
 }

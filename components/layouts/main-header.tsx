@@ -14,7 +14,6 @@ const menuItems = [
   { name: "Home", href: "/" },
   { name: "Draw", href: "/draw" },
   { name: "Pricing", href: "/pricing" },
-  { name: "Dashboard", href: "/dashboard" },
 ];
 
 export function MainHeader() {
