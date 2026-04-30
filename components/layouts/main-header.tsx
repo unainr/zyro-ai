@@ -12,7 +12,6 @@ import { ThemeSwitcher } from "../theme/mode-toggle";
 
 const menuItems = [
   { name: "Home", href: "/" },
-  { name: "Draw", href: "/draw" },
   { name: "Pricing", href: "/pricing" },
 ];
 

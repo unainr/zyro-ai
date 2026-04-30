@@ -5,6 +5,10 @@ import {
   FileText,
   Message01Icon,
   Stethoscope02FreeIcons,
+  WebDesign01Icon,
+  Database01Icon,
+  WebDesign02Icon,
+  Database02FreeIcons,
 } from "@hugeicons/core-free-icons"
 const SYSTEM_PROMPT = `You are an AI medical intake assistant helping collect patient information before a doctor reviews the case.
 
@@ -73,48 +77,22 @@ DO NOT:
 
 Your goal is to collect high-quality structured information for doctors, not to replace them.`
 
-export const patientSidebarLinks = [
-  {
-    label: "Dashboard",
-    href: "/dashboard/patient",
-    icon: ChartHistogramIcon,
-  },
-  {
-    label: "Appointments",
-    href: "/dashboard/patient/appointments",
-    icon: Calendar03Icon,
-  },
-  {
-    label: "Reports",
-    href: "/dashboard/patient/reports",
-    icon: FileText,
-  },
-  {
-    label: "Messages",
-    href: "/dashboard/patient/messages",
-    icon: Message01Icon,
-  },
-]
 
-export const doctorSidebarLinks = [
+export const SidebarLinks = [
   {
     label: "Dashboard",
-    href: "/dashboard/doctor",
+    href: "/dashboard/draw",
     icon: ChartHistogramIcon,
   },
   {
-    label: "Appointments",
-    href: "/dashboard/doctor/appointments",
-    icon: Calendar03Icon,
+    label: "Workspace",
+    href: "/dashboard/workspace",
+    icon: WebDesign02Icon,
   },
   {
-    label: "Reports",
-    href: "/dashboard/doctor/reports",
-    icon: FileText,
+    label: "Design",
+    href: "/dashboard/design",
+    icon: Database02FreeIcons,
   },
-  {
-    label: "Messages",
-    href: "/dashboard/doctor/messages",
-    icon: Message01Icon,
-  },
+  
 ]

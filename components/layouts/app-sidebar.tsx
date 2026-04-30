@@ -14,15 +14,12 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { doctorSidebarLinks, patientSidebarLinks } from "@/lib/constants"
+import { SidebarLinks } from "@/lib/constants"
+import Image from "next/image"
 
-interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  role: "doctor" | "patient"
-}
-
-export function AppSidebar({ role, ...props }: AppSidebarProps) {
+export function AppSidebar({  ...props }) {
   const pathname = usePathname()
-  const links = role === "doctor" ? doctorSidebarLinks : patientSidebarLinks
+  const links = SidebarLinks 
 
   return (
     <Sidebar {...props}>
@@ -32,10 +29,24 @@ export function AppSidebar({ role, ...props }: AppSidebarProps) {
             <SidebarMenuButton size="lg" asChild>
               <Link href="/">
                 <div className="flex flex-col  gap-0.5 leading-none">
-                  <span className="font-medium">
-                    {role === "doctor" ? "Doctor Portal" : "Patient Portal"}
-                  </span>
-                  <span className="text-xs text-muted-foreground capitalize">{role}</span>
+                  <Image
+                                  src="/logo1.png"
+                                  alt="CareInktake Logo"
+                                  width={800}
+                                  height={800}
+                                  loading="eager"
+                                  className="h-12 w-auto object-contain hidden dark:block"
+                                />
+                  
+                                <Image
+                                  src="/logo2.png"
+                                  alt="CareInktake Logo"
+                                  width={800}
+                                  height={800}
+                                  loading="eager"
+                                  className="h-12 w-auto object-contain dark:hidden block"
+                                />
+                  
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -55,7 +66,7 @@ export function AppSidebar({ role, ...props }: AppSidebarProps) {
         isActive={isActive}
         className={
           isActive
-            ? "bg-green-600/70! text-white! hover:bg-green-500/90!"
+            ? "bg-blue-500! text-white! hover:bg-blue-600/90!"
             : ""
         }
       >

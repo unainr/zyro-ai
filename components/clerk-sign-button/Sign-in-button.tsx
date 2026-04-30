@@ -16,6 +16,9 @@ export const SignInButtonClerk = () => {
 
 			<Show when="signed-in">
 				<UserButton />
+				<Button variant={'primary'} className="rounded-none" asChild>
+					<Link href="/dashboard/draw">Dashboard</Link>
+				</Button>
 			</Show>
 		</>
 	);

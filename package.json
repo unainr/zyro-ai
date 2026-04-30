@@ -13,13 +13,17 @@
     "db:migrate": "npx drizzle-kit migrate"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^3.0.54",
     "@base-ui/react": "^1.4.1",
     "@clerk/nextjs": "^7.2.7",
+    "@codesandbox/sandpack-react": "^2.20.0",
     "@excalidraw/excalidraw": "^0.18.1",
     "@hugeicons/core-free-icons": "^4.1.1",
     "@hugeicons/react": "^1.1.6",
+    "@imagekit/nodejs": "^7.5.0",
     "@neondatabase/serverless": "^1.1.0",
     "@tanstack/react-query": "^5.100.5",
+    "ai": "^6.0.170",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
