@@ -35,7 +35,7 @@ const CanvasView = async () => {
                     >
                         {/* Left — clickable area */}
                         <Link
-                            href={`/draw/${project.id}`}
+                            href={`/dashboard/draw/${project.id}`}
                             className="flex flex-col gap-1 flex-1 min-w-0"
                         >
                             <p className="font-medium text-sm truncate">

@@ -15,7 +15,7 @@ const DrawPage = async ({ params }: Props) => {
     // Only pass initialData if editorData actually has elements
     const hasData = project.editorData?.elements?.length > 0;
     return (
-    <div className="h-screen w-full py-20">
+    <div className="h-screen w-full ">
      <CanvasEditor
              projectId={project.id}
             initialTitle={project.title ?? "Untitled"}
