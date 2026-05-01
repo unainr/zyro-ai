@@ -22,7 +22,7 @@ export default function CreateBoardDialog({ open, onClose }: Props) {
             onSuccess: (result) => {
                 onClose();
                 setName("");
-                router.push(`/draw/${result.project?.id}`);
+                router.push(`/dashboard/draw/${result.project?.id}`);
             },
         });
     }

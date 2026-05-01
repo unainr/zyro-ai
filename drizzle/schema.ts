@@ -37,10 +37,7 @@ export const uiGenerations = pgTable("ui_generations", {
 	id: uuid("id").primaryKey().defaultRandom(),
 	userId: text("user_id").notNull(),
 
-
-	title: text("title"),
-
-	prompt: text("prompt"),
+	prompt: text("user_prompt"),
 
 	imageUrl: text("image_url"),
 

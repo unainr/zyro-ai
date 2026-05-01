@@ -128,3 +128,7 @@
     @apply font-sans;
   }
 }
+
+.sp-preview-iframe {
+    height: 100% !important;
+}

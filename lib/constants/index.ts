@@ -85,8 +85,8 @@ export const SidebarLinks = [
     icon: ChartHistogramIcon,
   },
   {
-    label: "Workspace",
-    href: "/dashboard/workspace",
+    label: "Generate Code",
+    href: "/dashboard/chat",
     icon: WebDesign02Icon,
   },
   {
