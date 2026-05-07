@@ -8,6 +8,8 @@ import { Spinner } from "@/components/ui/spinner";
 import { useCreateGeneration } from "../../hooks/use-chat";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { useGenerationLimit } from "@/modules/billing/server/hooks/use-billing";
+import Link from "next/link";
 
 export const ChatInput = () => {
     const [prompt, setPrompt] = useState("");
@@ -18,6 +20,12 @@ export const ChatInput = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
 const router = useRouter();
     const { mutate: createGeneration, isPending } = useCreateGeneration();
+    const { data: limitData } = useGenerationLimit();
+    const isPro = limitData?.isPro ?? false;
+    const used = limitData?.used ?? 0;
+    const limit = limitData?.limit ?? 10;
+    const remaining = limitData?.remaining ?? 10;
+    const canGenerate = limitData?.canGenerate ?? true;
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: { "image/*": [] },
@@ -80,6 +88,56 @@ const router = useRouter();
 
     return (
         <div className="w-full max-w-3xl mx-auto px-4">
+             {/* Credit bar */}
+            <div className="flex items-center justify-between mb-3 px-1">
+                <div className="flex items-center gap-2.5">
+                    <div className="h-1 w-28 bg-white/10 rounded-full overflow-hidden">
+                        <div
+                            className="h-full bg-white/40 rounded-full transition-all duration-500"
+                            style={{ width: `${Math.min((used / limit) * 100, 100)}%` }}
+                        />
+                    </div>
+                    <span className="text-white/30 text-xs">
+                        {remaining} credit{remaining !== 1 ? "s" : ""} left
+                        {isPro ? " · Pro" : " · Free"}
+                    </span>
+                </div>
+                {!isPro && (
+                    <Link
+                        href="/dashboard/billing"
+                        className="text-xs text-white/30 hover:text-white/60 transition underline underline-offset-4"
+                    >
+                        Upgrade →
+                    </Link>
+                )}
+            </div>
+
+            {/* Limit reached */}
+            {!canGenerate && (
+                <div className="mb-3 px-4 py-3 rounded-xl bg-white/3 border border-white/10 flex items-center justify-between gap-4">
+                    <div>
+                        <p className="text-white/70 text-sm font-medium">
+                            {isPro ? "Monthly limit reached" : "Free credits used up"}
+                        </p>
+                        <p className="text-white/30 text-xs mt-0.5">
+                            {isPro
+                                ? "Your 30 monthly generations are used. Resets next month."
+                                : "Upgrade to Pro for 30 generations/month."
+                            }
+                        </p>
+                    </div>
+                    {!isPro && (
+                        <Link
+                            href="/dashboard/billing"
+                            className="shrink-0 text-xs bg-white text-black font-medium px-3 py-1.5 rounded-lg hover:bg-white/90 transition"
+                        >
+                            Upgrade to Pro
+                        </Link>
+                    )}
+                </div>
+            )}
+
+            {/* Input box */}
             <div
                 {...getRootProps()}
                 className={`

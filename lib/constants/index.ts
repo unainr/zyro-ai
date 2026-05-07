@@ -89,10 +89,10 @@ export const SidebarLinks = [
     href: "/dashboard/chat",
     icon: WebDesign02Icon,
   },
-  {
-    label: "Design",
-    href: "/dashboard/design",
-    icon: Database02FreeIcons,
-  },
+  // {
+  //   label: "Design",
+  //   href: "/dashboard/design",
+  //   icon: Database02FreeIcons,
+  // },
   
 ]
