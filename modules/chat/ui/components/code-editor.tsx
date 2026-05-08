@@ -21,6 +21,21 @@ const PLACEHOLDER = `export default function App() {
   );
 }`;
 
+// Catches undefined variables and other runtime issues before passing to Sandpack
+function sanitizeCode(raw: string): string {
+    if (!raw) return PLACEHOLDER;
+    // Strip markdown fences
+    const fenced = raw.match(/```(?:jsx?|tsx?|javascript|typescript)?\n?([\s\S]*?)```/);
+    if (fenced) return fenced[1].trim();
+    // Strip appended config blocks
+    const stopMarkers = ["/* tailwind.config", "module.exports", "// tailwind"];
+    let cleaned = raw;
+    for (const marker of stopMarkers) {
+        const idx = cleaned.indexOf(marker);
+        if (idx !== -1) cleaned = cleaned.slice(0, idx);
+    }
+    return cleaned.trim() || PLACEHOLDER;
+}
 export default function CodeEditor({ code, isLoading }: Props) {
 	const [activeTab, setActiveTab] = useState<"code" | "preview">("preview");
 

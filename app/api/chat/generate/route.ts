@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
         : prompt;
 
     const { text } = await generateText({
-        model: openrouter("baidu/qianfan-ocr-fast:free"),
+        model: openrouter("openai/gpt-oss-120b:free"),
         system: PROMPT.PROMPT,
         messages: [{ role: "user", content: userContent }],
     });
