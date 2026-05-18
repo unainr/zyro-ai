@@ -21,6 +21,7 @@ export async function POST(req: NextRequest) {
     const { text } = await generateText({
         model: openrouter("openai/gpt-oss-120b:free"),
         system: PROMPT.PROMPT,
+        maxOutputTokens:8000,
         messages: [{ role: "user", content: userContent }],
     });
 
@@ -30,3 +31,5 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ code: clean });
 }
+
+// baidu/cobuddy:free

@@ -7,6 +7,7 @@ import {
 	SandpackPreview,
 } from "@codesandbox/sandpack-react";
 import { PROMPT } from "@/lib/constants/prompt";
+import LoadingScreen from "@/components/loading";
 
 interface Props {
 	code: string;
@@ -136,31 +137,7 @@ createRoot(document.getElementById('root')).render(
 					overflow: "hidden",
 				}}>
 				{isLoading && (
-					<div
-						style={{
-							position: "absolute",
-							inset: 0,
-							zIndex: 10,
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "center",
-							background: "#0f0f0f",
-						}}>
-						<div style={{ display: "flex", gap: "8px" }}>
-							{["-0.3s", "-0.15s", "0s"].map((delay) => (
-								<div
-									key={delay}
-									style={{
-										width: "6px",
-										height: "6px",
-										borderRadius: "50%",
-										background: "rgba(255,255,255,0.3)",
-										animation: `bounce 1s ${delay} infinite`,
-									}}
-								/>
-							))}
-						</div>
-					</div>
+			<LoadingScreen/>
 				)}
 
 				<SandpackProvider
@@ -175,7 +152,7 @@ createRoot(document.getElementById('root')).render(
 
             // Icons
             "lucide-react": "^0.469.0",
-
+            "react-icons": "^5.0.0",
             // Styling utils
             "tailwind-merge": "^2.4.0",
             "tailwindcss-animate": "^1.0.7",
