@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     const { text } = await generateText({
         model: google("gemini-3.5-flash"),
         system: PROMPT.PROMPT,
-        maxOutputTokens:16000,
+        maxOutputTokens:19000,
         messages: [{ role: "user", content: userContent }],
     });
 
