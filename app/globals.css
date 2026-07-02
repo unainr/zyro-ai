@@ -132,3 +132,10 @@
 .sp-preview-iframe {
     height: 100% !important;
 }
+
+/* Force Clerk's checkout drawer above app navbar (z-50) */
+.cl-drawerRoot,
+.cl-drawerBackdrop,
+.cl-modalBackdrop {
+    z-index: 100 !important;
+}

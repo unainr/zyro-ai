@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
 	createGeneration,
+	deleteGeneration,
 	getGenerations,
 	saveGeneratedCode,
 } from "../server/create-code";
@@ -39,6 +40,41 @@ export function useUpdateGeneration() {
 			queryClient.invalidateQueries({
 				queryKey: zyroKeys.detail(variables.id),
 			});
+		},
+	});
+}
+
+
+export function useDeleteGeneration() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: (id: string) => deleteGeneration(id),
+		onMutate: async (id: string) => {
+			await queryClient.cancelQueries({ queryKey: zyroKeys.all });
+
+			const previous = queryClient.getQueryData(zyroKeys.all);
+
+			queryClient.setQueryData(zyroKeys.all, (old: any) => {
+				if (!old?.generations) return old;
+				return {
+					...old,
+					generations: old.generations.filter(
+						(g: { id: string }) => g.id !== id
+					),
+				};
+			});
+
+			return { previous };
+		},
+		onError: (_err, _id, context) => {
+			// rollback if the delete actually failed
+			if (context?.previous) {
+				queryClient.setQueryData(zyroKeys.all, context.previous);
+			}
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries({ queryKey: zyroKeys.all });
 		},
 	});
 }
