@@ -5,6 +5,7 @@ import {
 	timestamp,
 	pgEnum,
 	jsonb,
+	integer,
 } from "drizzle-orm/pg-core";
 
 /* =========================================================
@@ -15,6 +16,7 @@ export const designTypeEnum = pgEnum("design_type", [
 	"system_flow",
 	"database_design",
 ]);
+export const planEnum = pgEnum("plan_type", ["free", "pro"]);
 
 /* =========================================================
    UI GENERATIONS
@@ -103,9 +105,27 @@ export const dbDesigns = pgTable("db_designs", {
 	updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+export const userCredits = pgTable("user_credits", {
+	id: uuid("id").primaryKey().defaultRandom(),
+	userId: text("user_id").notNull().unique(),
+
+	balance: integer("balance").notNull().default(35),
+	plan: planEnum("plan").notNull().default("free"),
+
+	lastResetAt: timestamp("last_reset_at").defaultNow().notNull(),
+	createdAt: timestamp("created_at").defaultNow(),
+	updatedAt: timestamp("updated_at")
+		.defaultNow()
+		.$onUpdate(() => new Date()),
+});
+
+
+
 /* =========================================================
    TYPES
 ========================================================= */
+export type InsertUserCredits = typeof userCredits.$inferInsert;
+export type SelectUserCredits = typeof userCredits.$inferSelect;
 
 export type InsertUiGenerations = typeof uiGenerations.$inferInsert;
 export type SelectUiGenerations = typeof uiGenerations.$inferSelect;
