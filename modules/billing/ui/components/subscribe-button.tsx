@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { CheckoutButton } from "@clerk/nextjs/experimental";
+import { SignInButton } from "@clerk/nextjs";
 import { Check } from "lucide-react";
 
 interface SubscribeButtonProps {
@@ -8,6 +9,8 @@ interface SubscribeButtonProps {
     isFree?: boolean;
     isActive?: boolean;
     recommended?: boolean;
+    isSignedIn?: boolean;
+    isLoaded?: boolean;
 }
 
 export function SubscribeButton({
@@ -15,7 +18,16 @@ export function SubscribeButton({
     isFree,
     isActive,
     recommended,
+    isSignedIn,
+    isLoaded,
 }: SubscribeButtonProps) {
+    // Auth not resolved yet — avoid flashing the wrong state
+    if (!isLoaded) {
+        return (
+            <div className="w-full h-10 rounded-xl bg-zinc-100 dark:bg-white/5 animate-pulse" />
+        );
+    }
+
     if (isActive) {
         return (
             <Button
@@ -31,11 +43,25 @@ export function SubscribeButton({
     if (isFree) {
         return (
             <Button
-                
+                disabled
                 className="w-full py-2.5 rounded-xl text-sm font-medium bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 text-zinc-400 dark:text-white/40 cursor-default"
             >
                 Always free
             </Button>
+        );
+    }
+
+    // Signed out — open Clerk's sign-in modal instead of a broken checkout
+    if (!isSignedIn) {
+        return (
+            <SignInButton mode="modal">
+                <Button
+                    variant={recommended ? "primary" : "outline"}
+                    className="w-full py-2.5 rounded-xl text-sm font-medium transition-all duration-200"
+                >
+                    Sign in to subscribe
+                </Button>
+            </SignInButton>
         );
     }
 
@@ -58,11 +84,8 @@ export function SubscribeButton({
             }}
         >
             <Button
-            variant={'primary'}
-                className={`
-                    w-full py-2.5 rounded-xl text-sm font-medium transition-all duration-200
-                    
-                `}
+                variant={recommended ? "primary" : "outline"}
+                className="w-full py-2.5 rounded-xl text-sm font-medium transition-all duration-200"
             >
                 Subscribe
             </Button>
